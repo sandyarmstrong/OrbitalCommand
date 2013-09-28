@@ -34,7 +34,7 @@ namespace OrbitalCommand
 		private static void Main (string[] args)
 		{
 			if (args.Length != 1) {
-				Console.WriteLine ("Wrong number of arguments");
+				Console.Error.WriteLine ("Wrong number of arguments");
 				return;
 			}
 			var until = args [0];
@@ -51,7 +51,7 @@ namespace OrbitalCommand
 							SortBy = CommitSortStrategies.Time
 						};
 					} catch (LibGit2SharpException) {
-						Console.WriteLine ("{0} does not appear to be a valid tag ref", until);
+						Console.Error.WriteLine ("{0} does not appear to be a valid tag ref", until);
 						return;
 					}
 
@@ -89,7 +89,7 @@ namespace OrbitalCommand
 					}
 				}
 			} catch (RepositoryNotFoundException) {
-				Console.WriteLine ("Please run from within a git repository");
+				Console.Error.WriteLine ("Please run from within a git repository");
 				return;
 			}
 		}
