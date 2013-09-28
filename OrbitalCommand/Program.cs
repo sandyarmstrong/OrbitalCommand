@@ -29,79 +29,67 @@ using LibGit2Sharp;
 
 namespace OrbitalCommand
 {
-	class Program
+	internal class Program
 	{
-		static void Main (string [] args)
+		private static void Main (string[] args)
 		{
-			if (args.Length != 1)
-			{
-				Console.WriteLine("Wrong number of arguments");
+			if (args.Length != 1) {
+				Console.WriteLine ("Wrong number of arguments");
 				return;
 			}
-			var until = args[0];
+			var until = args [0];
 
-			try
-			{
-				using (var repo = new Repository(Environment.CurrentDirectory))
-				{
+			try {
+				using (var repo = new Repository (Environment.CurrentDirectory)) {
 					CommitFilter filter;
-					try
-					{
+					try {
 						filter = new CommitFilter
-							{
-								// TODO: Allow any commitish value here
-								Until = repo.Tags[until],
-								Since = repo.Head,
-								SortBy = CommitSortStrategies.Time
-							};
-					}
-					catch (LibGit2SharpException)
-					{
-						Console.WriteLine("{0} does not appear to be a valid tag ref", until);
+						{
+							// TODO: Allow any commitish value here
+							Until = repo.Tags [until],
+							Since = repo.Head,
+							SortBy = CommitSortStrategies.Time
+						};
+					} catch (LibGit2SharpException) {
+						Console.WriteLine ("{0} does not appear to be a valid tag ref", until);
 						return;
 					}
 
-					var regex = new Regex(@"Fixes:\s*(?<bugUrl>http\S+\?(?<bugNum>\d+))",
-					                      RegexOptions.Multiline | RegexOptions.Compiled);
+					var regex = new Regex (@"Fixes:\s*(?<bugUrl>http\S+\?(?<bugNum>\d+))",
+						RegexOptions.Multiline | RegexOptions.Compiled);
 
-					var idToUrl = new Dictionary<string, string>();
+					var idToUrl = new Dictionary<string, string> ();
 
-					foreach (var commit in repo.Commits.QueryBy(filter))
-					{
-						var change = new StringBuilder("* ");
-						change.Append(commit.MessageShort);
-						var matches = regex.Matches(commit.Message);
-						if (matches.Count > 0)
-						{
-							change.Append(" (");
+					foreach (var commit in repo.Commits.QueryBy (filter)) {
+						var change = new StringBuilder ("* ");
+						change.Append (commit.MessageShort);
+						var matches = regex.Matches (commit.Message);
+						if (matches.Count > 0) {
+							change.Append (" (");
 							var first = true;
-							foreach (Match match in matches)
-							{
-								var bugNum = match.Groups["bugNum"].Value;
-								var bugUrl = match.Groups["bugUrl"].Value;
-								idToUrl[bugNum] = bugUrl;
+							foreach (Match match in matches) {
+								var bugNum = match.Groups ["bugNum"].Value;
+								var bugUrl = match.Groups ["bugUrl"].Value;
+								idToUrl [bugNum] = bugUrl;
 
 								if (!first)
-									change.Append(", ");
-								change.Append(String.Format("[{0}][{0}]", bugNum));
+									change.Append (", ");
+								change.Append (String.Format ("[{0}][{0}]", bugNum));
 								first = false;
 							}
-							change.Append(")");
+							change.Append (")");
 						}
-						Console.WriteLine(change);
+						Console.WriteLine (change);
 					}
 
-					Console.WriteLine();
+					Console.WriteLine ();
 
-					foreach (var pair in idToUrl)
-					{
-						Console.WriteLine("[{0}]: {1}", pair.Key, pair.Value);
+					foreach (var pair in idToUrl) {
+						Console.WriteLine ("[{0}]: {1}", pair.Key, pair.Value);
 					}
 				}
-			}
-			catch (RepositoryNotFoundException)
-			{
-				Console.WriteLine("Please run from within a git repository");
+			} catch (RepositoryNotFoundException) {
+				Console.WriteLine ("Please run from within a git repository");
 				return;
 			}
 		}
