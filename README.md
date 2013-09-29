@@ -43,15 +43,15 @@ This is Markdown! If I was really lazy, this already gives me:
 If I specify a FogBugz server (see `--help`), I can even fetch titles to use as
 tooltips for the bug links:
 
-    * Fix upgrade bug ([12345][12345])
+    * Fix layout ([54321][54321])
     
-    [12345]: https://mybugtracker/?12345 "Broken sprocket in the corner"
+    [54321]: https://mybugtracker/?54321 "Broken sprocket in the corner"
 
 (hover over link to see title)
 
-* Fix upgrade bug ([12345][12345])
+* Fix layout ([54321][54321])
 
-[12345]: https://mybugtracker/?12345 "Broken sprocket in the corner"
+[54321]: https://mybugtracker/?54321 "Broken sprocket in the corner"
 
 Now all I have to do is edit to be friendlier to QA and I have lovely Markdown
 release notes. I use that as my annotation for the new release tag. When
