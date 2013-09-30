@@ -56,8 +56,8 @@ tooltips for the bug links:
 Now all I have to do is edit to be friendlier to QA and I have lovely Markdown
 release notes. I use that as my annotation for the new release tag. When
 I create the release build, the build machine uses the annotation as the body of
-the Github Release it generates. That triggers a webhook event, and another
-service (to be released soon I hope) shoots off an HTML email that includes
+the Github Release it generates. That triggers a webhook event, and
+[HookHub](https://github.com/litl/hookhub) shoots off an HTML email that includes
 information including an HTMLized version of the Markdown release notes.
 
 Now I'm happy. :-)
